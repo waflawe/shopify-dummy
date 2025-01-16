@@ -7,9 +7,7 @@
         class="w-full h-screen object-cover"
       />
       <div class="absolute inset-0 bg-black opacity-75"></div>
-      <div
-        class="absolute inset-0 flex pt-36 justify-center puritan z-10 text-white"
-      >
+      <div class="absolute inset-0 flex pt-36 justify-center puritan z-10 text-white">
         <p class="text-8xl">Welcome to the<br />ShopifyDummy!</p>
       </div>
     </div>

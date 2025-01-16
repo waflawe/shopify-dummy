@@ -41,6 +41,8 @@
           <input
             id="username"
             v-model="username"
+            ref="usernameInput"
+            @keyup.down="$refs.passwordInput.focus()"
             class="text-gray-600 bg-stone-200 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-lg px-[10px] text-sm leading-none outline-none"
           />
         </fieldset>
@@ -50,6 +52,8 @@
             id="password"
             type="password"
             v-model="password"
+            ref="passwordInput"
+            @keyup.up="$refs.usernameInput.focus()"
             class="text-gray-600 bg-stone-200 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-lg px-[10px] text-sm leading-none outline-none"
           />
         </fieldset>
