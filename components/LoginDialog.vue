@@ -24,7 +24,7 @@
   />
   <DialogRoot v-model:open="open" v-if="!authStore.isAuth">
     <DialogTrigger>
-      <button class="btn-def" type="button">Login</button>
+      <button class="btn-def-outline" type="button">Login</button>
     </DialogTrigger>
     <DialogPortal>
       <DialogOverlay class="bg-black bg-opacity-70 fixed inset-0 z-30" />
@@ -58,7 +58,7 @@
           />
         </fieldset>
         <div class="mt-[25px] flex justify-end">
-          <button class="btn-success" type="button" @click="login">Login</button>
+          <button class="btn-success-outline" type="button" @click="login">Login</button>
         </div>
       </DialogContent>
     </DialogPortal>

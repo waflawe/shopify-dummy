@@ -59,10 +59,10 @@
           </button>
           <LoginDialog />
           <div class="flex" v-if="authStore.isAuth">
-            <!--          <NuxtLink :to="{name: 'account'}" class="rounded-full my-auto mr-3 size-[30px]">-->
-            <!--            <img :src="authStore.user.image" alt="User Image">-->
-            <!--          </NuxtLink>-->
-            <button class="btn-def" type="button" @click="logout">Logout</button>
+            <NuxtLink :to="{ name: 'account' }" class="rounded-full my-auto mr-3 size-[30px]">
+              <img :src="authStore.user.image" alt="User Image" />
+            </NuxtLink>
+            <button class="btn-def-outline" type="button" @click="logout">Logout</button>
           </div>
         </div>
       </div>
