@@ -1,15 +1,16 @@
 <template>
-  <main class="overflow-hidden" style="height: calc(100vh - 3.5rem)">
-    <div class="h-full relative w-full overflow-hidden">
+  <main style="height: calc(100vh - 3.5rem)">
+    <div class="h-full relative w-full">
       <img
         src="https://png.pngtree.com/background/20230614/original/pngtree-image-of-shopping-mall-ecommerce-with-an-isometric-background-picture-image_3476197.jpg"
         alt="ecommerce bg"
-        class="absolute inset-0 w-full h-screen object-cover z-0"
+        class="w-full h-screen object-cover"
       />
+      <div class="absolute inset-0 bg-black opacity-75"></div>
       <div
-        class="pt-36 puritan absolute inset-0 z-10 text-white text-center h-full w-full bg-black bg-opacity-75"
+        class="absolute inset-0 flex pt-36 justify-center puritan z-10 text-white"
       >
-        <p class="text-white text-8xl">Welcome to the<br />ShopifyDummy!</p>
+        <p class="text-8xl">Welcome to the<br />ShopifyDummy!</p>
       </div>
     </div>
   </main>

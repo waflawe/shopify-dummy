@@ -27,7 +27,7 @@
       <button class="btn-def" type="button">Login</button>
     </DialogTrigger>
     <DialogPortal>
-      <DialogOverlay class="bg-black bg-opacity-75 fixed inset-0 z-30" />
+      <DialogOverlay class="bg-black bg-opacity-70 fixed inset-0 z-30" />
       <DialogContent
         class="fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-def p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
       >
@@ -85,6 +85,9 @@ const showSuccessAlert = ref(false)
 const showErrorAlert = ref(false)
 
 const login = async () => {
+  showSuccessAlert.value = false
+  showErrorAlert.value = false
+
   loading.value = true
   const status = await authStore.login(username.value, password.value)
   loading.value = false
