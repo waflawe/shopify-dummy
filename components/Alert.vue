@@ -1,7 +1,7 @@
 <template>
-  <div class="relative">
+  <div>
     <div
-      class="fixed left-5 top-5 z-50 max-w-xs w-full text-white shadow-lg rounded-lg p-4 flex items-center space-x-3 transition-all transform hover:scale-105"
+      class="fixed left-5 top-5 max-w-xs w-full text-white shadow-lg rounded-lg p-4 flex items-center space-x-3 transition-all transform hover:scale-105"
       :class="{
         'transform translate-x-[-100%] opacity-0': !visible,
         'opacity-100': visible,
@@ -10,6 +10,7 @@
         'bg-gray-500': theme === AlertThemes.LOADING,
       }"
       v-if="visible || isExiting"
+      style="z-index: 9999"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -32,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, ref, onBeforeUnmount } from "vue"
+import { onMounted, ref, onBeforeUnmount } from "vue"
 import { AlertThemes, AlertExitModes } from "~/types"
 
 const props = defineProps<{
@@ -77,10 +78,6 @@ onBeforeUnmount(() => {
   }
   if (exitTimeout) {
     clearTimeout(exitTimeout)
-  }
-
-  if (props.mode === AlertExitModes.DEFAULT) {
-    exitAlert()
   }
 })
 </script>

@@ -1,7 +1,30 @@
 <template>
-  <DialogRoot v-model:open="open">
+  <Alert
+    title="Loading"
+    message="Please, wait..."
+    :theme="AlertThemes.LOADING"
+    :mode="AlertExitModes.DEFAULT"
+    v-if="loading"
+  />
+  <Alert
+    title="Success"
+    message="Success logged in"
+    :theme="AlertThemes.SUCCESS"
+    :mode="AlertExitModes.AUTO"
+    @exited="showSuccessAlert = false"
+    v-if="showSuccessAlert"
+  />
+  <Alert
+    title="Error"
+    message="Something went wrong :("
+    :theme="AlertThemes.ERROR"
+    :mode="AlertExitModes.AUTO"
+    @exited="showErrorAlert = false"
+    v-if="showErrorAlert"
+  />
+  <DialogRoot v-model:open="open" v-if="!authStore.isAuth">
     <DialogTrigger>
-      <button class="btn-def" type="button" v-if="!authStore.isAuth">Login</button>
+      <button class="btn-def" type="button">Login</button>
     </DialogTrigger>
     <DialogPortal>
       <DialogOverlay class="bg-black bg-opacity-75 fixed inset-0 z-30" />
@@ -36,25 +59,11 @@
       </DialogContent>
     </DialogPortal>
   </DialogRoot>
-  <Alert
-    title="Loading"
-    message="Please, wait..."
-    :theme="AlertThemes.LOADING"
-    :mode="AlertExitModes.DEFAULT"
-    v-if="loading"
-  />
-  <Alert
-    title="Success"
-    message="Success logged in"
-    :theme="AlertThemes.SUCCESS"
-    :mode="AlertExitModes.AUTO"
-    v-if="showSuccessAlert"
-  />
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/auth.ts"
-import { ref } from "vue"
+import { ref, nextTick } from "vue"
 import {
   DialogContent,
   DialogDescription,
@@ -73,16 +82,21 @@ const password = ref("")
 const open = ref(false)
 const loading = ref(false)
 const showSuccessAlert = ref(false)
+const showErrorAlert = ref(false)
 
 const login = async () => {
-  open.value = false
   loading.value = true
-  await authStore.login(username.value, password.value)
+  const status = await authStore.login(username.value, password.value)
   loading.value = false
 
-  showSuccessAlert.value = true
-  setTimeout(() => {
-    showSuccessAlert.value = false
-  }, 4300)
+  await nextTick()
+
+  if (status) {
+    open.value = false
+    await nextTick()
+    showSuccessAlert.value = true
+  } else {
+    showErrorAlert.value = true
+  }
 }
 </script>

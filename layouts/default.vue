@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col relative">
     <div class="mt-14 flex-1">
       <NuxtPage />
     </div>
@@ -58,12 +58,12 @@
             </svg>
           </button>
           <LoginDialog />
-          <!--        <div class="flex" v-if="authStore.isAuth">-->
+                  <div class="flex" v-if="authStore.isAuth">
           <!--          <NuxtLink :to="{name: 'account'}" class="rounded-full my-auto mr-3 size-[30px]">-->
           <!--            <img :src="authStore.user.image" alt="User Image">-->
           <!--          </NuxtLink>-->
-          <!--          <button class="btn-nav" type="button" @click="logout">Logout</button>-->
-          <!--        </div>-->
+                    <button class="btn-def" type="button" @click="logout">Logout</button>
+                  </div>
         </div>
       </div>
     </nav>
@@ -74,11 +74,11 @@
 import { useCookie } from "nuxt/app"
 import { useAuthStore } from "@/stores/auth.ts"
 import { useRouter } from "vue-router"
-import { onMounted } from "vue"
+import { onMounted, type Ref } from "vue"
 
 const authStore = useAuthStore()
 const router = useRouter()
-const theme = useCookie("theme")
+const theme: Ref<string> = useCookie("theme")
 
 authStore.init()
 
@@ -101,7 +101,7 @@ const toggleTheme = () => {
 const logout = () => {
   if (authStore.isAuth) {
     authStore.logout()
-    router.push({ name: "home" })
+    router.push({ name: "index" })
   }
 }
 </script>

@@ -3,8 +3,8 @@
     <div class="h-full relative w-full overflow-hidden">
       <img
         src="https://png.pngtree.com/background/20230614/original/pngtree-image-of-shopping-mall-ecommerce-with-an-isometric-background-picture-image_3476197.jpg"
-        alt=""
-        class="absolute inset-0 w-full h-screen object-cover"
+        alt="ecommerce bg"
+        class="absolute inset-0 w-full h-screen object-cover z-0"
       />
       <div
         class="pt-36 puritan absolute inset-0 z-10 text-white text-center h-full w-full bg-black bg-opacity-75"

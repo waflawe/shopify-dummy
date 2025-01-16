@@ -16,10 +16,10 @@ export const useAuthStore = defineStore("authStore", {
   }),
   actions: {
     init() {
-      const user = useCookie("access")
-      if (user.value) {
-        this.user = JSON.parse(user.value!)
-        this.access = useCookie("access").value!
+      const access = useCookie("access")
+      if (access.value) {
+        this.user = useCookie("user").value! as UserType
+        this.access = access.value!
         this.refresh = useCookie("refresh").value!
         this.isAuth = true
       }
@@ -45,7 +45,7 @@ export const useAuthStore = defineStore("authStore", {
         this.refresh = data.value.refreshToken
 
         const user = useCookie("user")
-        user.value = JSON.stringify(this.user)
+        user.value = this.user
         const access = useCookie("access")
         access.value = this.access
         const refresh = useCookie("refresh")
@@ -59,6 +59,8 @@ export const useAuthStore = defineStore("authStore", {
     logout() {
       if (this.isAuth) {
         this.user = {}
+        this.access = ""
+        this.refresh = ""
         const user = useCookie("user")
         user.value = null
         const access = useCookie("access")
