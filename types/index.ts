@@ -41,7 +41,6 @@ export type UserExtendedDataType = {
   address: {
     address: string
     city: string
-    state: string
     country: string
   }
   bank: {

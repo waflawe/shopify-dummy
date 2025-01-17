@@ -13,7 +13,6 @@ export const transformResponseToUserExtendedData = (response: CurrentAuthenticat
     address: {
       address: response.address.address,
       city: response.address.city,
-      state: response.address.state,
       country: response.address.country,
     },
     bank: {
