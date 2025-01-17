@@ -1,27 +1,5 @@
 <template>
-  <Alert
-    title="Loading"
-    message="Please, wait..."
-    :theme="AlertThemes.LOADING"
-    :mode="AlertExitModes.DEFAULT"
-    v-if="loading"
-  />
-  <Alert
-    title="Success"
-    message="Success logged in"
-    :theme="AlertThemes.SUCCESS"
-    :mode="AlertExitModes.AUTO"
-    @exited="showSuccessAlert = false"
-    v-if="showSuccessAlert"
-  />
-  <Alert
-    title="Error"
-    message="Something went wrong :("
-    :theme="AlertThemes.ERROR"
-    :mode="AlertExitModes.AUTO"
-    @exited="showErrorAlert = false"
-    v-if="showErrorAlert"
-  />
+  <DialogTemplate @exitDialog="open = false" ref="template" />
   <DialogRoot v-model:open="open" v-if="!authStore.isAuth">
     <DialogTrigger>
       <button class="btn-def-outline" type="button">Login</button>
@@ -67,7 +45,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/auth.ts"
-import { ref, nextTick } from "vue"
+import { ref } from "vue"
 import {
   DialogContent,
   DialogDescription,
@@ -77,33 +55,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "reka-ui"
-import { AlertExitModes, AlertThemes } from "~/types"
 
 const authStore = useAuthStore()
 
 const username = ref("")
 const password = ref("")
 const open = ref(false)
-const loading = ref(false)
-const showSuccessAlert = ref(false)
-const showErrorAlert = ref(false)
+const template = ref(null)
 
-const login = async () => {
-  showSuccessAlert.value = false
-  showErrorAlert.value = false
+const callback = async () => await authStore.login(username.value, password.value)
 
-  loading.value = true
-  const status = await authStore.login(username.value, password.value)
-  loading.value = false
-
-  await nextTick()
-
-  if (status) {
-    open.value = false
-    await nextTick()
-    showSuccessAlert.value = true
-  } else {
-    showErrorAlert.value = true
-  }
-}
+const login = async () => await template.value.submit(callback)
 </script>
