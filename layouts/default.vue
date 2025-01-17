@@ -33,7 +33,7 @@
               stroke-width="1.5"
               stroke="currentColor"
               class="size-6"
-              v-if="theme!.value === 'light'"
+              v-if="theme === 'light'"
             >
               <path
                 stroke-linecap="round"
@@ -48,7 +48,7 @@
               stroke-width="1.5"
               stroke="currentColor"
               class="size-6"
-              v-if="theme!.value === 'dark'"
+              v-if="theme === 'dark'"
             >
               <path
                 stroke-linecap="round"
@@ -78,7 +78,7 @@ import { onMounted, type Ref } from "vue"
 
 const authStore = useAuthStore()
 const router = useRouter()
-const theme: Ref<string> = useCookie("theme")
+const theme = useCookie("theme")
 
 authStore.init()
 
