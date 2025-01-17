@@ -11,28 +11,34 @@
           <button class="btn-def-outline w-[95%] mx-auto flex justify-center" type="button">
             Edit account
           </button>
-          <button class="btn-error-outline w-[95%] mx-auto flex justify-center" type="button">
-            Delete account
-          </button>
+          <DeleteAccountAlert />
         </div>
       </section>
       <section class="w-3/4 hover:shadow hover:shadow-black/50 rounded bg-def-600 p-3">
-        <div class="border-b-2 border-black dark:border-gray-50 pb-1.5 text text-xl flex justify-between">
-          <div>{{user.firstName}} {{user.maidenName}} {{user.lastName}}</div>
-          <div class="text-sm text-gray-500 flex items-end">{{user.email}} {{user.phone}}</div>
+        <div
+          class="border-b-2 border-black dark:border-gray-50 pb-1.5 text text-xl flex justify-between"
+        >
+          <div>{{ user.firstName }} {{ user.maidenName }} {{ user.lastName }}</div>
+          <div class="text-sm text-gray-500 flex items-end">{{ user.email }} {{ user.phone }}</div>
         </div>
         <div class="text-lg text flex pt-1 items-center justify-center">
-          <div>@{{user.username}}</div>
+          <div>@{{ user.username }}</div>
           <Separator
             class="mx-[10px] border border-black dark:border-gray-50"
             orientation="vertical"
           />
-          <div>{{user.age}}</div>
+          <div>{{ user.age }}</div>
           <Separator
             class="mx-[10px] border border-black dark:border-gray-50"
             orientation="vertical"
           />
-          <div class="size-6" :class="{'text-blue-500': user.gender === 'male', 'text-pink-500': user.gender === 'female'}">
+          <div
+            class="size-6"
+            :class="{
+              'text-blue-500': user.gender === 'male',
+              'text-pink-500': user.gender === 'female',
+            }"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -67,20 +73,33 @@
           </div>
         </div>
         <div class="justify-center mt-1 flex text">
-          <div>Delivery address: {{user.address.country}}, {{user.address.city}}, {{user.address.address}}</div>
+          <div>
+            Delivery address: {{ user.address.country }}, {{ user.address.city }},
+            {{ user.address.address }}
+          </div>
         </div>
         <div class="mx-auto max-w-lg mt-5">
           <div class="bg-def rounded-lg overflow-hidden shadow-lg shadow-black/50">
             <div class="px-6 py-4">
               <div class="flex justify-between items-center">
-                <img class="h-8" src="https://www.svgrepo.com/show/499847/company.svg" alt="Workflow logo">
-                <span class="font-medium text-gray-500">{{user.bank.cardExpire}}</span>
+                <img
+                  class="h-8"
+                  src="https://www.svgrepo.com/show/499847/company.svg"
+                  alt="Workflow logo"
+                />
+                <span class="font-medium text-gray-500">{{ user.bank.cardExpire }}</span>
               </div>
               <div class="mt-4">
-                <div class="font-bold text text-xl">{{cardNumber}}</div>
+                <div class="font-bold text text-xl">{{ cardNumber }}</div>
                 <div class="flex justify-between items-center mt-2">
-                  <div class="text-sm uppercase text-gray-500">{{user.firstName}} {{user.lastName}}</div>
-                  <img class="h-10 w-10" src="https://www.svgrepo.com/show/362011/mastercard.svg" alt="Mastercard logo">
+                  <div class="text-sm uppercase text-gray-500">
+                    {{ user.firstName }} {{ user.lastName }}
+                  </div>
+                  <img
+                    class="h-10 w-10"
+                    src="https://www.svgrepo.com/show/362011/mastercard.svg"
+                    alt="Mastercard logo"
+                  />
                 </div>
               </div>
             </div>
@@ -98,8 +117,9 @@
 <script setup lang="ts">
 import { useQuery } from "@pinia/colada"
 import { useAuthStore } from "@/stores/auth.ts"
-import { Separator } from 'reka-ui'
-import {onBeforeUpdate} from "vue"
+import { Separator } from "reka-ui"
+import { onBeforeUpdate } from "vue"
+import DeleteAccountAlert from "~/components/DeleteAccountAlert.vue"
 
 const authStore = useAuthStore()
 
@@ -111,7 +131,6 @@ const { data: user } = useQuery({
 let cardNumber = "0000 0000 0000 0000"
 
 onBeforeUpdate(() => {
-  console.log(user.value)
-  cardNumber = user.value ? user.value!.bank.cardNumber.match(/.{1,4}/g)?.join(' ') : cardNumber
+  cardNumber = user.value ? user.value!.bank.cardNumber.match(/.{1,4}/g)?.join(" ") : cardNumber
 })
 </script>

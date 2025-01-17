@@ -79,6 +79,18 @@ export const useAuthStore = defineStore("authStore", {
       }
     },
 
+    async deleteAccount() {
+      const { request } = useApi()
+      const userId = this.user.id
+      const { status } = await useAsyncData(`deleteAccount-${Date.now()}`, () =>
+        request(`/users/${userId}`, Methods.DELETE, {
+          headers: { "Content-Type": "application/json" },
+        })
+      )
+
+      return status.value === "success"
+    },
+
     logout() {
       if (this.isAuth) {
         this.user = {}

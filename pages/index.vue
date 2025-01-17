@@ -1,4 +1,12 @@
 <template>
+  <Alert
+    title="Success"
+    message="Account deleted"
+    :theme="AlertThemes.SUCCESS"
+    :mode="AlertExitModes.AUTO"
+    @exited="showDeleteAlert = false"
+    v-if="showDeleteAlert"
+  />
   <main style="height: calc(100vh - 3.5rem)">
     <div class="h-full relative w-full">
       <img
@@ -15,9 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from "vue"
+import { onMounted, onUnmounted, ref } from "vue"
+import { useRoute } from "vue-router"
+import { AlertExitModes, AlertThemes } from "~/types"
+
+const showDeleteAlert = ref(false)
+const route = useRoute()
 
 onMounted(() => {
+  if (route.query.action === "delete-account") showDeleteAlert.value = true
   document.body.style.overflow = "hidden"
 })
 

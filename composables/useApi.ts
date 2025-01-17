@@ -8,6 +8,7 @@ type HeadersType = { [key: string]: string }
 export enum Methods {
   GET = "GET",
   POST = "POST",
+  DELETE = "DELETE",
 }
 
 export const useApi = () => {

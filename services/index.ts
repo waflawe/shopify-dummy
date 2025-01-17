@@ -1,6 +1,8 @@
-import {type CurrentAuthenticatedUserResponseType, type UserExtendedDataType} from "@/types"
+import { type CurrentAuthenticatedUserResponseType, type UserExtendedDataType } from "@/types"
 
-export const transformResponseToUserExtendedData = (response: CurrentAuthenticatedUserResponseType): UserExtendedDataType => {
+export const transformResponseToUserExtendedData = (
+  response: CurrentAuthenticatedUserResponseType
+): UserExtendedDataType => {
   return {
     username: response.username,
     firstName: response.firstName,
