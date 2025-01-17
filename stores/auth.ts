@@ -79,11 +79,24 @@ export const useAuthStore = defineStore("authStore", {
       }
     },
 
-    async deleteAccount() {
+    async deleteAccount(): Promise<boolean> {
       const { request } = useApi()
       const userId = this.user.id
       const { status } = await useAsyncData(`deleteAccount-${Date.now()}`, () =>
         request(`/users/${userId}`, Methods.DELETE, {
+          headers: { "Content-Type": "application/json" },
+        })
+      )
+
+      return status.value === "success"
+    },
+
+    async updateAccount(data: Partial<UserExtendedDataType>): Promise<boolean> {
+      const { request } = useApi()
+      const userId = this.user.id
+      const { status } = await useAsyncData(`updateAccount-${Date.now()}`, () =>
+        request(`/users/${userId}`, Methods.PATCH, {
+          body: data,
           headers: { "Content-Type": "application/json" },
         })
       )

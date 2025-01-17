@@ -8,6 +8,7 @@ type HeadersType = { [key: string]: string }
 export enum Methods {
   GET = "GET",
   POST = "POST",
+  PATCH = "PATCH",
   DELETE = "DELETE",
 }
 

@@ -8,9 +8,7 @@
           :src="authStore.user.image"
         />
         <div class="space-y-1.5 mb-1.5">
-          <button class="btn-def-outline w-[95%] mx-auto flex justify-center" type="button">
-            Edit account
-          </button>
+          <EditAccountDialog :user="user" />
           <DeleteAccountAlert />
         </div>
       </section>
