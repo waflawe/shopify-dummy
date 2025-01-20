@@ -44,3 +44,21 @@
 .link {
   @apply text-blue-600 hover:border-b hover:border-blue-600;
 }
+
+::-webkit-scrollbar {
+ width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+}
+
+.scrollable {
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}

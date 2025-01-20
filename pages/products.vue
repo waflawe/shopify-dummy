@@ -8,7 +8,7 @@
     />
     <div class="flex items-start gap-x-5 mt-5">
       <div class="w-1/4 relative">
-        <div class="sticky left-0 top-0 rounded-lg bg-def-600 h-screen overflow-y-auto">
+        <div class="sticky left-0 top-0 rounded-lg bg-def-600 h-screen overflow-y-auto scrollable">
           <div class="cursor-pointer px-3 hover:bg-gray-200 py-1 dark:hover:bg-[#101010]">
             <div class="py-0.5 text-center">All</div>
             <div class="border-b border-gray-300 dark:border-gray-800 w-[90%] mx-auto"></div>
