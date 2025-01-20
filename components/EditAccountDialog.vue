@@ -1,5 +1,9 @@
 <template>
-  <DialogTemplate @exitDialog="open = false" ref="template" />
+  <DialogTemplate
+    @exitDialog="open = false"
+    ref="template"
+    successMessage="Success update your account."
+  />
   <DialogRoot v-model:open="open">
     <DialogTrigger class="btn-def-outline w-[95%] mx-auto flex justify-center">
       Edit account

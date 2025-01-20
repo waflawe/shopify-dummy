@@ -8,7 +8,7 @@
   />
   <Alert
     title="Success"
-    message="Success update your account"
+    :message="successMessage"
     :theme="AlertThemes.SUCCESS"
     :mode="AlertExitModes.AUTO"
     @exited="showSuccessAlert = false"
@@ -30,6 +30,10 @@ import { AlertExitModes, AlertThemes } from "~/types"
 
 const emit = defineEmits<{
   (exitDialog: "exitDialog"): void
+}>()
+
+const props = defineProps<{
+  successMessage: string
 }>()
 
 const loading = ref(false)

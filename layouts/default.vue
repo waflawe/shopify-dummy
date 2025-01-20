@@ -18,12 +18,18 @@
             <div>ShopifyDummy</div>
           </div>
         </NuxtLink>
-        <!--      <NuxtLink :to="{name: 'products'}" class="ms-10 text text-dark text-2xl">-->
-        <!--        <p class="sawarabi">Shop</p>-->
-        <!--      </NuxtLink>-->
-        <!--      <NuxtLink :to="{name: 'cart'}" class="ms-10 text text-dark text-2xl" v-if="authStore.isAuth">-->
-        <!--        <p class="sawarabi">Cart</p>-->
-        <!--      </NuxtLink>-->
+        <div class="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%]">
+          <NuxtLink
+            :to="{ name: 'products' }"
+            class="text text-lg my-auto border-b transition-all duration-200"
+            :class="{
+              'hover:border-emerald-600 hover:text-emerald-600': route.name !== 'products',
+              'border-emerald-600 text-emerald-600': route.name === 'products',
+            }"
+          >
+            <p class="sawarabi">Shop</p>
+          </NuxtLink>
+        </div>
         <div class="ms-auto me-10 flex">
           <button class="mr-3 text" type="button" @click="toggleTheme">
             <svg
@@ -58,8 +64,8 @@
             </svg>
           </button>
           <LoginDialog />
-          <div class="flex" v-if="authStore.isAuth">
-            <NuxtLink :to="{ name: 'account' }" class="rounded-full my-auto mr-3 size-[30px]">
+          <div class="flex space-x-1.5" v-if="authStore.isAuth">
+            <NuxtLink :to="{ name: 'account' }" class="rounded-full my-auto size-[30px]">
               <img :src="authStore.user.image" alt="User Image" />
             </NuxtLink>
             <button class="btn-def-outline" type="button" @click="logout">Logout</button>
@@ -73,11 +79,12 @@
 <script setup lang="ts">
 import { useCookie } from "nuxt/app"
 import { useAuthStore } from "@/stores/auth.ts"
-import { useRouter } from "vue-router"
-import { onMounted, type Ref } from "vue"
+import { useRouter, useRoute } from "vue-router"
+import { onMounted } from "vue"
 
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
 const theme = useCookie("theme")
 
 authStore.init()

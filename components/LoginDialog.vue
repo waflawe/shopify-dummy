@@ -1,5 +1,5 @@
 <template>
-  <DialogTemplate @exitDialog="open = false" ref="template" />
+  <DialogTemplate @exitDialog="open = false" ref="template" successMessage="Success log in." />
   <DialogRoot v-model:open="open" v-if="!authStore.isAuth">
     <DialogTrigger>
       <button class="btn-def-outline" type="button">Login</button>

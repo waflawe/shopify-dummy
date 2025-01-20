@@ -16,11 +16,11 @@ export const useApi = () => {
   const config = useRuntimeConfig()
   const apiUrl = config.public.API_URL
 
-  const request = async (
+  const request = async <T>(
     endpoint: string,
     method: Methods,
     { body, params, headers }: { body?: BodyType; params?: ParamsType; headers?: HeadersType }
-  ) => {
+  ): Promise<T> => {
     const authStore = useAuthStore()
     const authHeaders = authStore.access ? { Authorization: "Bearer " + authStore.access } : {}
     const url = apiUrl + endpoint
