@@ -67,10 +67,10 @@ import { useQuery } from "@pinia/colada"
 import { useProductsStore } from "@/stores/products.ts"
 import { formatCategory } from "@/services"
 import { ref, watch } from "vue"
-import { type Product } from "@/types"
+import { type ProductType } from "@/types"
 
 const productsStore = useProductsStore()
-const products = ref([] as Product[] | never[])
+const products = ref([] as ProductType[] | never[])
 const search = ref("")
 
 const { data: categories } = useQuery({
@@ -78,7 +78,7 @@ const { data: categories } = useQuery({
   query: async () => await productsStore.getCategories(),
 })
 
-const fetchProducts = async (query: string): Promise<Product[]> => {
+const fetchProducts = async (query: string): Promise<ProductType[]> => {
   if (query || !products.value.length) {
     return await productsStore.getProducts({ search: query })
   }

@@ -49,7 +49,7 @@ export type UserExtendedDataType = {
   }
 }
 
-export type Review = {
+export type ReviewType = {
   rating: number
   comment: string
   date: string
@@ -57,7 +57,7 @@ export type Review = {
   reviewerEmail: string
 }
 
-export type Product = {
+export type ProductType = {
   id: number
   title: string
   description: string
@@ -67,5 +67,5 @@ export type Product = {
   rating: number
   thumbnail: string
   images: Array<string>
-  reviews: Array<Review>
+  reviews: Array<ReviewType>
 }

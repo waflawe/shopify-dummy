@@ -1,5 +1,5 @@
 import { Methods, useApi } from "@/composables/useApi.ts"
-import { type Product } from "@/types"
+import { type ProductType } from "@/types"
 
 type ProductsQuery = {
   search?: string
@@ -7,12 +7,12 @@ type ProductsQuery = {
 
 export const useProductsStore = defineStore("productsStore", {
   actions: {
-    async getProducts({ search }: ProductsQuery): Promise<Product[]> {
+    async getProducts({ search }: ProductsQuery): Promise<ProductType[]> {
       let url = "/products/"
       url = search ? url + `search/?q=${search}&limit=50` : url + "?limit=50"
       const { request } = useApi()
       const response = await request<{
-        products: Product[]
+        products: ProductType[]
       }>(url, Methods.GET, {})
 
       return response.products
