@@ -66,10 +66,13 @@
 import { useQuery } from "@pinia/colada"
 import { useProductsStore } from "@/stores/products.ts"
 import { formatCategory } from "@/services"
-import { ref, watch } from "vue"
+import { ref, watch, onMounted } from "vue"
 import { type ProductType } from "@/types"
+import { useRoute, useRouter } from "vue-router"
 
 const productsStore = useProductsStore()
+const route = useRoute()
+const router = useRouter()
 const products = ref([] as ProductType[] | never[])
 const search = ref("")
 
@@ -79,22 +82,24 @@ const { data: categories } = useQuery({
 })
 
 const fetchProducts = async (query: string): Promise<ProductType[]> => {
-  if (query || !products.value.length) {
-    return await productsStore.getProducts({ search: query })
-  }
-
-  const { data } = useQuery({
-    key: ["products"],
-    query: async () => await productsStore.getProducts({}),
-  })
-
-  return data.value ? data.value : []
+  return await productsStore.getProducts({ search: query })
 }
+
+watch(
+  (): string => (route.query.search ? (route.query.search as string) : ""),
+  async (newQuery: string) => {
+    products.value = await fetchProducts(newQuery)
+  }
+)
 
 watch(
   search,
   async (newQuery: string) => {
-    products.value = await fetchProducts(newQuery)
+    if (!newQuery) {
+      products.value = await fetchProducts("")
+    }
+
+    await router.push({ name: "products", query: { search: newQuery } })
   },
   { immediate: true }
 )
