@@ -9,7 +9,10 @@
     <div class="flex items-start gap-x-5 mt-5">
       <div class="w-1/4 relative">
         <div class="sticky left-0 top-0 rounded-lg bg-def-600 h-screen overflow-y-auto scrollable">
-          <div class="cursor-pointer px-3 hover:bg-gray-200 py-1 dark:hover:bg-[#101010]">
+          <div
+            class="cursor-pointer px-3 hover:bg-gray-200 py-1 dark:hover:bg-[#101010]"
+            @click="() => proccessFilterByCategoryQuery('all')"
+          >
             <div class="py-0.5 text-center">All</div>
             <div class="border-b border-gray-300 dark:border-gray-800 w-[90%] mx-auto"></div>
           </div>
@@ -18,6 +21,7 @@
             v-for="category in categories"
             class="cursor-pointer px-3 hover:bg-gray-200 py-1 dark:hover:bg-[#101010]"
             :key="category"
+            @click="() => proccessFilterByCategoryQuery(category)"
           >
             <div class="py-0.5 text-center">{{ formatCategory(category) }}</div>
             <div class="border-b border-gray-300 dark:border-gray-800 w-[90%] mx-auto"></div>
@@ -64,7 +68,7 @@
 
 <script setup lang="ts">
 import { useQuery } from "@pinia/colada"
-import { useProductsStore } from "@/stores/products.ts"
+import { useProductsStore } from "@/stores/products"
 import { formatCategory } from "@/services"
 import { ref, watch, onMounted } from "vue"
 import { type ProductType } from "@/types"
@@ -74,7 +78,7 @@ const productsStore = useProductsStore()
 const route = useRoute()
 const router = useRouter()
 const products = ref([] as ProductType[] | never[])
-const search = ref(route.query.search || "")
+const search = ref((route.query.search as string) || "")
 
 const { data: categories } = useQuery({
   key: ["cats"],
@@ -82,8 +86,26 @@ const { data: categories } = useQuery({
 })
 
 const fetchProducts = async (query: string): Promise<ProductType[]> => {
-  return await productsStore.getProducts({ search: query })
+  return await productsStore.getProducts({ search: query as string })
 }
+
+const filterByCategory = async (slug: string): Promise<ProductType[]> => {
+  if (!(categories.value!.includes(slug as string) || slug === "all"))
+    return await fetchProducts("")
+
+  return slug === "all"
+    ? await fetchProducts("")
+    : await productsStore.filterByCategory(slug as string)
+}
+
+const proccessFilterByCategoryQuery = (slug: string) => {
+  router.push({ name: "products", query: { search: route.query.search, category: slug } })
+}
+
+watch(
+  (): string => (route.query.category as string) || "",
+  async (slug: string) => (products.value = await filterByCategory(slug))
+)
 
 watch(
   (): string => (route.query.search as string) || "",
@@ -101,6 +123,12 @@ watch(search, async (newQuery: string) => {
 })
 
 onMounted(async () => {
-  products.value = await fetchProducts(route.query.search || "")
+  if (route.query.search) {
+    products.value = await fetchProducts((route.query.search as string) || "")
+  } else if (route.query.category) {
+    products.value = await filterByCategory(route.query.category as string)
+  } else {
+    products.value = await fetchProducts("")
+  }
 })
 </script>

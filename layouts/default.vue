@@ -24,7 +24,8 @@
             class="text text-lg my-auto border-b transition-all duration-200"
             :class="{
               '!hover:border-emerald-600 !hover:text-emerald-600': route.name !== 'products',
-              '!border-emerald-600 !dark:border-emerald-500 !text-emerald-600 !dark:text-emerald-500': route.name === 'products',
+              '!border-emerald-600 !dark:border-emerald-500 !text-emerald-600 !dark:text-emerald-500':
+                route.name === 'products',
             }"
           >
             <p class="sawarabi">Shop</p>
