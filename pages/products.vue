@@ -1,11 +1,19 @@
 <template>
   <main class="bg-def text px-20 py-10">
-    <input
-      type="text"
-      class="w-full px-5 py-1.5 bg-def-600 shadow hover:shadow-md focus:shadow-md placeholder:text-gray-500 text-dark-300 rounded z-0 focus:outline-none"
-      placeholder="Search anything..."
-      v-model="search"
-    />
+    <div class="flex items-start gap-x-5">
+      <input
+        type="text"
+        class="w-full px-5 py-1.5 bg-def-600 shadow hover:shadow-md focus:shadow-md placeholder:text-gray-500 text-dark-300 rounded z-0 focus:outline-none"
+        placeholder="Search anything..."
+        v-model="search"
+      />
+      <ProductsSortDropdown
+        :options="sortOptions"
+        :defaultOption="defaultDropdownOption"
+        :defaultSort="defaultDropdownSort"
+        @optionChanged="sortOptionChanged"
+      />
+    </div>
     <div class="flex items-start gap-x-5 mt-5">
       <div class="w-1/4 relative">
         <div class="sticky left-0 top-0 rounded-lg bg-def-600 h-screen overflow-y-auto scrollable">
@@ -50,7 +58,7 @@
                   <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">
                     ${{ product.price }}
                   </p>
-                  <p class="text-base font-medium text-gray-500 line-through dark:text-gray-300">
+                  <p class="text-sm font-medium text-gray-500 line-through dark:text-gray-300">
                     ${{ (product.price * (1 + product.discountPercentage / 100)).toFixed(2) }}
                   </p>
                   <p class="ml-auto text-base font-medium text-green-500">
@@ -71,8 +79,24 @@ import { useQuery } from "@pinia/colada"
 import { useProductsStore } from "@/stores/products"
 import { formatCategory } from "@/services"
 import { ref, watch, onMounted } from "vue"
-import { type ProductType } from "@/types"
+import {
+  type ProductType,
+  type ProductSortOptionsType,
+  ProductsOrder,
+  type ProductsQuery,
+} from "@/types"
 import { useRoute, useRouter } from "vue-router"
+
+const sortOptions: ProductSortOptionsType = {
+  titleAsc: "Product title",
+  titleDesc: "Product title",
+  ratingAsc: "Product rating",
+  ratingDesc: "Product rating",
+  priceAsc: "Product price",
+  priceDesc: "Product price",
+  discountPercentageAsc: "Product discount",
+  discountPercentageDesc: "Product discount",
+}
 
 const productsStore = useProductsStore()
 const route = useRoute()
@@ -80,27 +104,50 @@ const router = useRouter()
 const products = ref([] as ProductType[] | never[])
 const search = ref((route.query.search as string) || "")
 
+const defaultDropdownOption = ref(
+  route.query.sortBy || route.query.order
+    ? (route.query.sortBy || "title") +
+        (route.query.order
+          ? route.query.order.charAt(0).toUpperCase() + route.query.order.slice(1)
+          : "Asc")
+    : "titleAsc"
+)
+const defaultDropdownSort = ref((route.query.order as string) || "asc")
+
 const { data: categories } = useQuery({
   key: ["cats"],
   query: async () => await productsStore.getCategories(),
 })
 
-const fetchProducts = async (query: string): Promise<ProductType[]> => {
-  return await productsStore.getProducts({ search: query as string })
-}
+const Q = (query: ProductsQuery): ProductsQuery => ({ ...route.query, ...query })
 
 const filterByCategory = async (slug: string): Promise<ProductType[]> => {
-  if (!(categories.value!.includes(slug as string) || slug === "all"))
-    return await fetchProducts("")
+  if (!categories.value!.includes(slug as string) && slug !== "all")
+    return await productsStore.getProducts(Q({}))
 
-  return slug === "all"
-    ? await fetchProducts("")
-    : await productsStore.filterByCategory(slug as string)
+  return await productsStore.getProducts(Q({ category: slug }))
 }
 
 const proccessFilterByCategoryQuery = (slug: string) => {
-  router.push({ name: "products", query: { search: route.query.search, category: slug } })
+  router.push({ name: "products", query: Q({ category: slug, search: "" }) })
 }
+
+const sortOptionChanged = (newOption: string) => {
+  router.push({
+    name: "products",
+    query: Q({
+      sortBy: newOption.endsWith("Asc") ? newOption.slice(0, -3) : newOption.slice(0, -4),
+      order: newOption.endsWith("Asc") ? ProductsOrder.ASC : ProductsOrder.DESC,
+    }),
+  })
+}
+
+watch(
+  () => [route.query.sortBy as string, route.query.order as string],
+  async ([sortBy, order]) => {
+    products.value = await productsStore.getProducts(Q({ sortBy, order }))
+  }
+)
 
 watch(
   (): string => (route.query.category as string) || "",
@@ -110,25 +157,35 @@ watch(
 watch(
   (): string => (route.query.search as string) || "",
   async (newQuery: string) => {
-    products.value = await fetchProducts(newQuery)
+    if (!newQuery && route.query.category) search.value = ""
+
+    products.value = await productsStore.getProducts(
+      Q({
+        search: newQuery,
+      })
+    )
   }
 )
 
 watch(search, async (newQuery: string) => {
+  if (!newQuery && route.query.category) return
+
   if (!newQuery) {
-    products.value = await fetchProducts("")
+    products.value = await productsStore.getProducts(Q({}))
   }
 
-  await router.push({ name: "products", query: { search: newQuery } })
+  await router.push({
+    name: "products",
+    query: Q({
+      search: newQuery,
+    }),
+  })
 })
 
 onMounted(async () => {
-  if (route.query.search) {
-    products.value = await fetchProducts((route.query.search as string) || "")
-  } else if (route.query.category) {
-    products.value = await filterByCategory(route.query.category as string)
-  } else {
-    products.value = await fetchProducts("")
-  }
+  if (route.query.category && !route.query.search)
+    return (products.value = await filterByCategory(route.query.category as string))
+
+  products.value = await productsStore.getProducts(Q({}))
 })
 </script>

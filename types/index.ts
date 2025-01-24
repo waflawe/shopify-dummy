@@ -69,3 +69,33 @@ export type ProductType = {
   images: Array<string>
   reviews: Array<ReviewType>
 }
+
+export type ProductSortOptionsType = {
+  titleAsc: string
+  titleDesc: string
+  ratingAsc: string
+  ratingDesc: string
+  priceAsc: string
+  priceDesc: string
+  discountPercentageAsc: string
+  discountPercentageDesc: string
+}
+
+export enum ProductsOrder {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+export enum ProductsSort {
+  TITLE = "title",
+  RATING = "rating",
+  PRICE = "price",
+  DISCOUNT_PERCENTAGE = "discountPercentage",
+}
+
+export type ProductsQuery = {
+  search?: string
+  category?: string
+  sortBy?: string
+  order?: string
+}
