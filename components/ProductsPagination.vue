@@ -58,7 +58,7 @@ const emit = defineEmits<{
 
 const route = useRoute()
 const productsStore = useProductsStore()
-const pagesCount = computed(() => Math.ceil(productsStore.total / 50))
+const pagesCount = computed(() => Math.ceil(productsStore.total / productsStore.productsPerPage))
 const activePage = ref(1)
 
 const pgnBtn = (btn: "prev" | "middle", active: number) => {

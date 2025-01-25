@@ -7,6 +7,7 @@ export const useProductsStore = defineStore("productsStore", {
     defaultSortField: "discountPercentage" as string,
     defaultOrder: "desc" as string,
     defaultSort: "discountPercentageDesc" as string,
+    productsPerPage: 51 as number,
   }),
   actions: {
     async getProducts({
@@ -19,15 +20,15 @@ export const useProductsStore = defineStore("productsStore", {
       let url =
         "/products/" +
         (search
-          ? `search/?q=${search}&limit=50`
+          ? `search/?q=${search}&limit=${this.productsPerPage}`
           : category
-            ? `category/${category}/?limit=50`
-            : "?limit=50")
+            ? `category/${category}/?limit=${this.productsPerPage}`
+            : `?limit=${this.productsPerPage}`)
       if (sortBy) url = url + `&sortBy=${sortBy}`
       else url = url + `&sortBy=${this.defaultSortField}`
       if (order) url = url + `&order=${order}`
       else url = url + `&order=${this.defaultOrder}`
-      if (page) url = url + `&skip=${page * 50 - 50}`
+      if (page) url = url + `&skip=${page * this.productsPerPage - this.productsPerPage}`
 
       const { request } = useApi()
       const response = await request<{
