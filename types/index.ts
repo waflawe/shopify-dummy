@@ -98,4 +98,5 @@ export type ProductsQuery = {
   category?: string
   sortBy?: string
   order?: string
+  page?: number
 }

@@ -69,6 +69,7 @@
             </div>
           </div>
         </div>
+        <ProductsPagination @paginate="paginate" />
       </div>
     </div>
   </main>
@@ -132,6 +133,10 @@ const proccessFilterByCategoryQuery = (slug: string) => {
   router.push({ name: "products", query: Q({ category: slug, search: "" }) })
 }
 
+const paginate = (page: number) => {
+  router.push({ name: "products", query: Q({ page }) })
+}
+
 const sortOptionChanged = (newOption: string) => {
   router.push({
     name: "products",
@@ -141,6 +146,11 @@ const sortOptionChanged = (newOption: string) => {
     }),
   })
 }
+
+watch(
+  () => (route.query.page as string) || "",
+  async (page: string) => (products.value = await productsStore.getProducts(Q({ page })))
+)
 
 watch(
   () => [route.query.sortBy as string, route.query.order as string],
