@@ -4,6 +4,9 @@ import { type ProductsQuery, type ProductType } from "@/types"
 export const useProductsStore = defineStore("productsStore", {
   state: () => ({
     total: 0 as number,
+    defaultSortField: "discountPercentage" as string,
+    defaultOrder: "desc" as string,
+    defaultSort: "discountPercentageDesc" as string,
   }),
   actions: {
     async getProducts({
@@ -21,7 +24,9 @@ export const useProductsStore = defineStore("productsStore", {
             ? `category/${category}/?limit=50`
             : "?limit=50")
       if (sortBy) url = url + `&sortBy=${sortBy}`
+      else url = url + `&sortBy=${this.defaultSortField}`
       if (order) url = url + `&order=${order}`
+      else url = url + `&order=${this.defaultOrder}`
       if (page) url = url + `&skip=${page * 50 - 50}`
 
       const { request } = useApi()

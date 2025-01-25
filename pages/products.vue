@@ -105,15 +105,16 @@ const router = useRouter()
 const products = ref([] as ProductType[] | never[])
 const search = ref((route.query.search as string) || "")
 
+const order = (route.query.order as string) || productsStore.defaultOrder
+
 const defaultDropdownOption = ref(
   route.query.sortBy || route.query.order
-    ? (route.query.sortBy || "title") +
-        (route.query.order
-          ? route.query.order.charAt(0).toUpperCase() + route.query.order.slice(1)
-          : "Asc")
-    : "titleAsc"
+    ? (route.query.sortBy || productsStore.defaultSortField) +
+        order.charAt(0).toUpperCase() +
+        order.slice(1)
+    : productsStore.defaultSort
 )
-const defaultDropdownSort = ref((route.query.order as string) || "asc")
+const defaultDropdownSort = ref(order)
 
 const { data: categories } = useQuery({
   key: ["cats"],
@@ -149,7 +150,7 @@ const sortOptionChanged = (newOption: string) => {
 
 watch(
   () => (route.query.page as string) || "",
-  async (page: string) => (products.value = await productsStore.getProducts(Q({ page })))
+  async (page: string) => (products.value = await productsStore.getProducts(Q({ page: +page })))
 )
 
 watch(
