@@ -1,4 +1,19 @@
 <template>
+  <Alert
+    title="Loading"
+    message="Please, wait..."
+    :theme="AlertThemes.LOADING"
+    :mode="AlertExitModes.DEFAULT"
+    v-if="loading"
+  />
+  <Alert
+    title="Success"
+    message="Success add product to cart"
+    :theme="AlertThemes.SUCCESS"
+    :mode="AlertExitModes.AUTO"
+    @exited="showSuccessAlert = false"
+    v-if="showSuccessAlert"
+  />
   <div class="bg-def text">
     <div class="mx-auto px-4 py-8">
       <div class="flex flex-wrap -mx-4">
@@ -77,6 +92,7 @@
 
           <div class="flex space-x-4 mb-6">
             <button
+              @click="addProductToCart"
               class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               <svg
@@ -148,9 +164,12 @@
 import { useRoute } from "vue-router"
 import { useProductsStore } from "@/stores/products"
 import { formatCategory } from "@/services"
+import { AlertExitModes, AlertThemes } from "~/types"
 
 const route = useRoute()
 const id = route.params.id
+const loading = ref(false)
+const showSuccessAlert = ref(false)
 const productsStore = useProductsStore()
 const product = await productsStore.getProduct(id)
 
@@ -168,6 +187,13 @@ function formatDate(isoDateString: string): string {
   const year = date.getUTCFullYear()
 
   return `${day}.${month}.${year}`
+}
+
+const addProductToCart = async () => {
+  loading.value = true
+  await new Promise(resolve => setTimeout(resolve, 2500))
+  loading.value = false
+  showSuccessAlert.value = true
 }
 </script>
 
