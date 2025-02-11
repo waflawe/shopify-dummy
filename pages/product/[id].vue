@@ -98,6 +98,48 @@
           </div>
         </div>
       </div>
+
+      <div class="grid grid-cols-3 space-x-2">
+        <div v-for="(review, index) in product.reviews" :key="index">
+          <figure class="relative rounded-2xl p-6 shadow-xl shadow-slate-900/10 text bg-def-600">
+            <blockquote class="relative">
+              <p class="text-lg tracking-tight">
+                {{ review.comment }}
+              </p>
+            </blockquote>
+            <figcaption
+              class="relative mt-6 flex items-end justify-between border-t border-slate-100 pt-6"
+            >
+              <div>
+                <div class="font-display text-base">{{ review.reviewerName }}</div>
+                <div class="mt-1 text-sm text-slate-500">{{ review.reviewerEmail }}</div>
+              </div>
+              <div class="overflow-hidden text-end">
+                <div class="flex items-center">
+                  <svg
+                    v-for="starIndex in 5"
+                    :key="starIndex"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="size-6"
+                    :class="
+                      starIndex <= Math.round(review.rating) ? 'text-yellow-500' : 'text-gray-300'
+                    "
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div>{{ formatDate(review.date) }}</div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -116,6 +158,16 @@ const activeImage = ref(product.images[0])
 
 const setActiveImage = (image: string) => {
   activeImage.value = image
+}
+
+function formatDate(isoDateString: string): string {
+  const date = new Date(isoDateString)
+
+  const day = String(date.getUTCDate()).padStart(2, "0")
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0")
+  const year = date.getUTCFullYear()
+
+  return `${day}.${month}.${year}`
 }
 </script>
 
