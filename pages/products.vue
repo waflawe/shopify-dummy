@@ -38,8 +38,12 @@
       </div>
       <div class="w-3/4 relative">
         <div class="grid grid-cols-3 gap-x-10 gap-y-3">
-          <!--          <NuxtLink :to="{name: 'product', params: {'id': product.id}}" class="col-span-1 w-full h-full" v-for="product in products" :key="product.id">-->
-          <div class="col-span-1 w-full h-full" v-for="product in products" :key="product.id">
+          <NuxtLink
+            :to="{ name: 'product-id', params: { id: product.id } }"
+            class="col-span-1 w-full h-full"
+            v-for="product in products"
+            :key="product.id"
+          >
             <div
               class="mx-auto w-full transition-all overflow-hidden rounded-lg bg-def-600 shadow-md duration-300 hover:scale-[1.03] hover:shadow-lg"
             >
@@ -67,7 +71,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </NuxtLink>
         </div>
         <ProductsPagination @paginate="paginate" />
       </div>

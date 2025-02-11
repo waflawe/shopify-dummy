@@ -114,7 +114,7 @@
 
 <script setup lang="ts">
 import { useQuery } from "@pinia/colada"
-import { useAuthStore } from "@/stores/auth.ts"
+import { useAuthStore } from "@/stores/auth"
 import { Separator } from "reka-ui"
 import { onBeforeUpdate } from "vue"
 import DeleteAccountAlert from "~/components/DeleteAccountAlert.vue"

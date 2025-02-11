@@ -44,5 +44,9 @@ export const useProductsStore = defineStore("productsStore", {
       const { request } = useApi()
       return await request<string[]>("/products/category-list", Methods.GET, {})
     },
+    async getProduct(id: number): Promise<ProductType> {
+      const { request } = useApi()
+      return await request<ProductType>(`/products/${id}`, Methods.GET, {})
+    },
   },
 })
