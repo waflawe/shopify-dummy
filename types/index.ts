@@ -93,3 +93,22 @@ export type ProductsQuery = {
   order?: string
   page?: number
 }
+
+export type ProductCartType = {
+  id: number
+  title: string
+  quantity: number
+  total: number
+  discountedTotal: number
+  discountPercentage: number
+  thumbnail: string
+}
+
+export type CartType = {
+  id: number
+  products: ProductCartType[]
+  total: number
+  discountedTotal: number
+  totalProducts: number
+  totalQuantity: number
+}

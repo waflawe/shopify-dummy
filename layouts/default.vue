@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col relative">
-    <div class="mt-14 flex-1">
+    <div class="mt-14 flex-1 bg-def text min-h-[calc(100vh-56px)]">
       <NuxtPage />
     </div>
     <nav
@@ -18,17 +18,26 @@
             <div>ShopifyDummy</div>
           </div>
         </NuxtLink>
-        <div class="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%]">
+        <div class="absolute top-1/2 flex space-x-2 left-1/2 translate-y-[-50%] translate-x-[-50%]">
           <NuxtLink
             :to="{ name: 'products' }"
-            class="text text-lg my-auto border-b transition-all duration-200"
+            class="text text-lg my-auto transition-all duration-200"
             :class="{
-              '!hover:border-emerald-600 !hover:text-emerald-600': route.name !== 'products',
-              '!border-emerald-600 !dark:border-emerald-500 !text-emerald-600 !dark:text-emerald-500':
+              '!border-emerald-600 border-b !dark:border-emerald-500 !text-emerald-600 !dark:text-emerald-500':
                 route.name === 'products',
             }"
           >
             <p class="sawarabi">Shop</p>
+          </NuxtLink>
+          <NuxtLink
+            :to="{ name: 'account-carts' }"
+            class="text text-lg my-auto transition-all duration-200"
+            :class="{
+              '!border-emerald-600 border-b !dark:border-emerald-500 !text-emerald-600 !dark:text-emerald-500':
+                route.name === 'account-carts',
+            }"
+          >
+            <p class="sawarabi">Carts</p>
           </NuxtLink>
         </div>
         <div class="ms-auto me-10 flex">
