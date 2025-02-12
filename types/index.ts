@@ -86,13 +86,6 @@ export enum ProductsOrder {
   DESC = "desc",
 }
 
-export enum ProductsSort {
-  TITLE = "title",
-  RATING = "rating",
-  PRICE = "price",
-  DISCOUNT_PERCENTAGE = "discountPercentage",
-}
-
 export type ProductsQuery = {
   search?: string
   category?: string
