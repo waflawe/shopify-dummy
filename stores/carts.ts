@@ -13,5 +13,9 @@ export const useCartsStore = defineStore("cartsStore", {
       })
       return response.carts
     },
+    async deleteCart(id: number) {
+      const { request } = useApi()
+      await request(`/carts/${id}`, Methods.DELETE, {})
+    },
   },
 })

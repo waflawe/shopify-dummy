@@ -1,7 +1,25 @@
 <template>
+  <Alert
+    title="Loading"
+    message="Please, wait..."
+    :theme="AlertThemes.LOADING"
+    :mode="AlertExitModes.DEFAULT"
+    v-if="loading"
+  />
+  <Alert
+    title="Success"
+    message="Success remove cart"
+    :theme="AlertThemes.SUCCESS"
+    :mode="AlertExitModes.AUTO"
+    @exited="showSuccessAlert = false"
+    v-if="showSuccessAlert"
+  />
   <div class="bg-def text p-10 flex flex-col space-y-5">
     <div class="bg-def-600 p-5 shadow-lg rounded-xl" v-for="cart in carts" :key="cart.id">
-      <h2 class="text-2xl font-bold mb-4">Cart #{{ cart.id }}</h2>
+      <div class="flex justify-between items-end mb-4">
+        <h2 class="text-2xl font-bold">Cart #{{ cart.id }}</h2>
+        <div class="btn-danger-outline h-auto" @click="deleteCart(cart.id)">Delete cart</div>
+      </div>
       <div class="grid grid-cols-4 gap-x-10 gap-y-5">
         <NuxtLink
           :to="{ name: 'product-id', params: { id: product.id } }"
@@ -48,11 +66,20 @@
 <script setup lang="ts">
 import { useCartsStore } from "~/stores/carts"
 import { useQuery } from "@pinia/colada"
-import { formatCategory } from "~/services"
+import { AlertExitModes, AlertThemes } from "~/types"
 
 const cartsStore = useCartsStore()
 const { data: carts } = useQuery({
   key: ["carts"],
   query: async () => await cartsStore.getCarts(),
 })
+const showSuccessAlert = ref(false)
+const loading = ref(false)
+
+const deleteCart = async (id: number) => {
+  loading.value = true
+  await cartsStore.deleteCart(id)
+  loading.value = false
+  showSuccessAlert.value = true
+}
 </script>
