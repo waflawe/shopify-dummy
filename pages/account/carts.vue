@@ -82,4 +82,8 @@ const deleteCart = async (id: number) => {
   loading.value = false
   showSuccessAlert.value = true
 }
+
+definePageMeta({
+  middleware: "auth",
+})
 </script>

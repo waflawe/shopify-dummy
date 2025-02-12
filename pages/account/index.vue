@@ -131,4 +131,8 @@ let cardNumber = "0000 0000 0000 0000"
 onBeforeUpdate(() => {
   cardNumber = user.value ? user.value!.bank.cardNumber.match(/.{1,4}/g)?.join(" ") : cardNumber
 })
+
+definePageMeta({
+  middleware: "auth",
+})
 </script>
