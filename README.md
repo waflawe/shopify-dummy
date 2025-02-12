@@ -36,9 +36,11 @@ docker-compose up
    <img alt="image" height="356" src=".githubscreenshots/login.png" width="700"/>
 3. Профиль:<br>
    <img alt="image" height="356" src=".githubscreenshots/account.png" width="700"/>
-4. Товары:<br>
+4. Обновление профиля:<br>
+   <img alt="image" height="356" src=".githubscreenshots/account-update.png" width="700"/>
+5. Товары:<br>
    <img alt="image" height="356" src=".githubscreenshots/products.png" width="700"/>
-5. Корзины:<br>
+6. Корзины:<br>
    <img alt="image" height="356" src=".githubscreenshots/carts.png" width="700"/>
 
 ## Лицензия
